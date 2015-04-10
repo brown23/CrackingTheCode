@@ -2,15 +2,18 @@
  * <pre>
  * Used JavaSE 1.7 
  * Space complexity: O(1) 
- * Time complexity: O(n^2) due to the nested loop
+ * Time complexity: O(n) newer version removes one loop
  * </pre>
  * 
- * @version 1.0
+ * @version 2.0
  * @author Jason Brown
  * 
  */
 
 public class UniqueChar {
+
+	static final int ASCII_TOTAL = 128;
+
 	public static void main(String[] args) {
 		String a = "ABCD"; // true
 		String b = "abcd"; // true
@@ -35,10 +38,6 @@ public class UniqueChar {
 
 	/**
 	 * <pre>
-	 * TODO look at how to lower the time complexity of this method
-	 * HINT:  What is the total set of ASCII or UNICODE characters
-	 * ACII:  There are 128 unique characters UNICODE: Depends on the version
-	 * 
 	 * 
 	 * @link http://www.asciitable.com/
 	 * @link http://babelstone.blogspot.com/2005/11/how-many-unicode-characters-are-there.html
@@ -48,12 +47,26 @@ public class UniqueChar {
 	 */
 	public boolean isUniqueChar(String one) {
 
+		if (one.length() > ASCII_TOTAL) {
+			return false;
+		}
+
+		// only need a buffer to hold the total values of the string
+		// not the entirety of the ASCII table
+		boolean[] buffer = new boolean[ASCII_TOTAL];
+
+		// only need one loop!
+		// get the value of character at a given index
+		// check that index of the buffer
+		// if the buffer is already set to true then we do not have a unique
+		// index
+		// else set the buffer to true
 		for (int i = 0; i < one.length(); i++) {
-			for (int j = (i + 1); j < one.length(); j++) {
-				if (one.charAt(i) == one.charAt(j)) {
-					return false;
-				}
+			int index = one.charAt(i);
+			if (buffer[index] == true) {
+				return false;
 			}
+			buffer[index] = true;
 		}
 
 		return true;
